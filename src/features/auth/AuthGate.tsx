@@ -17,9 +17,5 @@ export function AuthGate({ children }: PropsWithChildren) {
     return <Redirect href="/sign-in" />;
   }
 
-  if (profile && inAuth) {
-    return <Redirect href={profile.role === "worker" ? "/worker" : "/jobs"} />;
-  }
-
   return <>{children}</>;
 }
