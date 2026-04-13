@@ -14,11 +14,11 @@ export function AuthGate({ children }: PropsWithChildren) {
   }
 
   if (!profile && !inAuth) {
-    return <Redirect href="/(auth)/sign-in" />;
+    return <Redirect href="/sign-in" />;
   }
 
   if (profile && inAuth) {
-    return <Redirect href={profile.role === "worker" ? "/(worker)" : "/(boss)"} />;
+    return <Redirect href={profile.role === "worker" ? "/worker" : "/jobs"} />;
   }
 
   return <>{children}</>;

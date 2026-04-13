@@ -18,7 +18,7 @@ export function RoomListScreen() {
       <Text style={styles.title}>Rooms</Text>
       <FieldButton label="Add room label" />
       {rooms.map((room) => (
-        <Link href={`/(boss)/jobs/${jobId}/rooms/${room.id}`} key={room.id} asChild>
+        <Link href={`/jobs/${jobId}/rooms/${room.id}`} key={room.id} asChild>
           <Pressable>
             <Card>
               <Text style={styles.roomName}>{room.name}</Text>

@@ -20,7 +20,7 @@ export function WorkerDashboardScreen() {
         <Badge text={`${activeCount} live tasks`} tone="warning" />
         <Text style={styles.body}>Open the queue, filter by room or stage, and upload completion photos from the field.</Text>
         <View style={styles.actions}>
-          <FieldButton label="Open task list" href="/(worker)/tasks" />
+          <FieldButton label="Open task list" href="/worker/tasks" />
           <FieldButton label="Sign out" onPress={() => setProfile(null)} variant="secondary" />
         </View>
       </Card>

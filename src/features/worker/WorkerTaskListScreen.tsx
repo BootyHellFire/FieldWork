@@ -17,7 +17,7 @@ export function WorkerTaskListScreen() {
       <Text style={styles.title}>Assigned tasks</Text>
       <Text style={styles.subtitle}>Filter controls can be promoted into chips once live data is wired.</Text>
       {tasks.map((task) => (
-        <Link href={`/(shared)/tasks/${task.id}`} key={task.id} asChild>
+        <Link href={`/tasks/${task.id}`} key={task.id} asChild>
           <Pressable>
             <Card>
               <View style={styles.row}>

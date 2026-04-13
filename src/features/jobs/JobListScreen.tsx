@@ -28,12 +28,12 @@ export function JobListScreen() {
       </View>
 
       <View style={styles.topActions}>
-        <FieldButton label="Create job" href="/(boss)/jobs/create" />
+        <FieldButton label="Create job" href="/jobs/create" />
         <FieldButton label="Sign out" onPress={() => setProfile(null)} variant="secondary" />
       </View>
 
       {jobs.map((job) => (
-        <Link href={`/(boss)/jobs/${job.id}`} key={job.id} asChild>
+        <Link href={`/jobs/${job.id}`} key={job.id} asChild>
           <Pressable>
             <Card>
               <View style={styles.rowBetween}>

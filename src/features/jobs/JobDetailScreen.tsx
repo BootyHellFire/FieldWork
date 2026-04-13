@@ -37,13 +37,13 @@ export function JobDetailScreen() {
 
       <Card>
         <Text style={styles.sectionTitle}>Job actions</Text>
-        <FieldButton label="Open plans" variant="secondary" href={`/(boss)/jobs/${jobId}/plans`} />
-        <FieldButton label="Open rooms" variant="secondary" href={`/(boss)/jobs/${jobId}/rooms`} />
-        <FieldButton label="Start walkthrough" href={`/(boss)/jobs/${jobId}/walkthrough/session-live`} />
+        <FieldButton label="Open plans" variant="secondary" href={`/jobs/${jobId}/plans`} />
+        <FieldButton label="Open rooms" variant="secondary" href={`/jobs/${jobId}/rooms`} />
+        <FieldButton label="Start walkthrough" href={`/jobs/${jobId}/walkthrough/session-live`} />
         <FieldButton
           label="Review extracted tasks"
           variant="secondary"
-          href={`/(boss)/jobs/${jobId}/review`}
+          href={`/jobs/${jobId}/review`}
         />
       </Card>
 
