@@ -16,6 +16,7 @@ export function WalkthroughCaptureScreen() {
   const { jobId, sessionId } = useLocalSearchParams<{ jobId: string; sessionId: string }>();
   const [manualNote, setManualNote] = useState("");
   const [snapshotUrl, setSnapshotUrl] = useState<string | null>(demoSegments[0].snapshot_image_url ?? null);
+  const [savedNotes, setSavedNotes] = useState<string[]>([]);
   const [permission, requestPermission] = useCameraPermissions();
   const {
     currentAssigneeId,
@@ -60,6 +61,7 @@ export function WalkthroughCaptureScreen() {
   }
 
   const addManualNote = () => {
+    const noteText = manualNote || "Manual note split created during offline capture.";
     queueUpload({
       id: `${Date.now()}`,
       kind: "segment",
@@ -68,13 +70,14 @@ export function WalkthroughCaptureScreen() {
         sessionId,
         roomId: room.id,
         assigneeUserId: assignee.id,
-        transcript_text: manualNote || "Manual note split created during offline capture.",
+        transcript_text: noteText,
         priority: currentPriority,
         stage: currentStage,
       }),
       status: "pending",
       created_at: new Date().toISOString(),
     });
+    setSavedNotes((current) => [noteText, ...current].slice(0, 3));
     setManualNote("");
   };
 
@@ -102,21 +105,35 @@ export function WalkthroughCaptureScreen() {
             <Badge text={`Priority: ${currentPriority}`} tone={currentPriority === "high" ? "danger" : "default"} />
             <Badge text={`Stage: ${currentStage}`} tone="warning" />
           </View>
+          <Text style={styles.sectionTitle}>Quick note</Text>
+          <Text style={styles.helperText}>
+            Type a short correction or note here, then tap Save note chunk so it gets queued with the current room and assignee.
+          </Text>
           <TextInput
             multiline
             onChangeText={setManualNote}
-            placeholder="Manual note or correction. Use this when the foreman wants a clean split."
+            placeholder="Example: Move the switch bank 2 inches left and keep this on Carson."
             style={styles.input}
             value={manualNote}
           />
           <View style={styles.grid}>
             <FieldButton label="Snapshot" onPress={() => setSnapshotUrl(demoSegments[0].snapshot_image_url ?? null)} />
-            <FieldButton label="New note" onPress={addManualNote} variant="secondary" />
+            <FieldButton label="Save note chunk" onPress={addManualNote} variant="secondary" />
             <FieldButton label="Room" onPress={() => setCurrentRoomId(room.id === "room-1" ? "room-2" : "room-1")} variant="secondary" />
             <FieldButton label="Assign" onPress={() => setCurrentAssigneeId(assignee.id === "worker-1" ? "worker-2" : "worker-1")} variant="secondary" />
             <FieldButton label="Priority" onPress={() => setCurrentPriority(currentPriority === "high" ? "normal" : "high")} variant="secondary" />
             <FieldButton label="Stage" onPress={() => setCurrentStage(currentStage === "trim" ? "finish" : "trim")} variant="secondary" />
           </View>
+          {savedNotes.length > 0 ? (
+            <View style={styles.savedNotesWrap}>
+              <Text style={styles.sectionTitle}>Recently saved</Text>
+              {savedNotes.map((note) => (
+                <Text key={note} style={styles.savedNoteItem}>
+                  • {note}
+                </Text>
+              ))}
+            </View>
+          ) : null}
           <FieldButton label="Finish session" variant="danger" />
         </Card>
 
@@ -156,6 +173,8 @@ const styles = StyleSheet.create({
   transcriptLabel: { color: "#F8F5F0", fontWeight: "700" },
   transcriptText: { color: "#F8F5F0", lineHeight: 20 },
   row: { flexDirection: "row", gap: spacing.sm, flexWrap: "wrap" },
+  sectionTitle: { color: colors.text, fontWeight: "700", fontSize: 16 },
+  helperText: { color: colors.textMuted, lineHeight: 20 },
   input: {
     minHeight: 80,
     borderWidth: 1,
@@ -166,6 +185,8 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
   grid: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
+  savedNotesWrap: { gap: spacing.xs },
+  savedNoteItem: { color: colors.text, lineHeight: 20 },
   snapshotTitle: { fontWeight: "700", color: colors.text },
   permissionBody: { color: colors.text, lineHeight: 21 },
   snapshot: { width: "100%", height: 180, borderRadius: radius.md },

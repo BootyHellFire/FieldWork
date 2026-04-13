@@ -1,4 +1,4 @@
-import { demoCandidates, demoJobs, demoPlans, demoRooms, demoTasks, demoUsers } from "@/data/demo";
+import { demoCandidates, demoJobs, demoPlans, demoRooms, demoTasks } from "@/data/demo";
 import type { ExtractionCandidate, Job, Plan, Room, Task, UserProfile } from "@/types/schema";
 
 import { supabase } from "./client";
@@ -14,7 +14,7 @@ function assertConfigured() {
 
 export async function fetchCurrentProfile(): Promise<UserProfile | null> {
   assertConfigured();
-  if (!supabase) return demoUsers[0];
+  if (!supabase) return null;
 
   const {
     data: { user },

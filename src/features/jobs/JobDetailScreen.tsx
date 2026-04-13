@@ -1,12 +1,13 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 
+import { Badge } from "@/components/Badge";
 import { Card } from "@/components/Card";
 import { FieldButton } from "@/components/FieldButton";
 import { Screen } from "@/components/Screen";
-import { colors } from "@/constants/theme";
+import { colors, spacing } from "@/constants/theme";
 import { fetchJob, fetchPlans, fetchRooms } from "@/lib/supabase/queries";
 
 export function JobDetailScreen() {
@@ -23,9 +24,21 @@ export function JobDetailScreen() {
       <Text style={styles.subtitle}>{job.address}</Text>
 
       <Card>
+        <Text style={styles.sectionTitle}>Today at a glance</Text>
+        <View style={styles.badgeRow}>
+          <Badge text={`${rooms.length} rooms`} tone="success" />
+          <Badge text={`${plans.length} plans`} />
+          <Badge text={job.status} tone="warning" />
+        </View>
+        <Text style={styles.body}>
+          {job.notes ?? "No job notes yet. Add field context here once the real job edit flow is wired."}
+        </Text>
+      </Card>
+
+      <Card>
         <Text style={styles.sectionTitle}>Job actions</Text>
-        <FieldButton label="Plans" variant="secondary" href={`/(boss)/jobs/${jobId}/plans`} />
-        <FieldButton label="Rooms" variant="secondary" href={`/(boss)/jobs/${jobId}/rooms`} />
+        <FieldButton label="Open plans" variant="secondary" href={`/(boss)/jobs/${jobId}/plans`} />
+        <FieldButton label="Open rooms" variant="secondary" href={`/(boss)/jobs/${jobId}/rooms`} />
         <FieldButton label="Start walkthrough" href={`/(boss)/jobs/${jobId}/walkthrough/session-live`} />
         <FieldButton
           label="Review extracted tasks"
@@ -35,10 +48,10 @@ export function JobDetailScreen() {
       </Card>
 
       <Card>
-        <Text style={styles.sectionTitle}>Snapshot</Text>
-        <Text style={styles.meta}>{rooms.length} rooms labeled</Text>
-        <Text style={styles.meta}>{plans.length} plans uploaded</Text>
-        <Text style={styles.body}>{job.notes}</Text>
+        <Text style={styles.sectionTitle}>What to do next</Text>
+        <Text style={styles.meta}>1. Check rooms before you start the walkthrough.</Text>
+        <Text style={styles.meta}>2. Keep the camera open and tap snapshot when something matters.</Text>
+        <Text style={styles.meta}>3. Review extracted tasks before workers see anything.</Text>
       </Card>
     </Screen>
   );
@@ -48,6 +61,7 @@ const styles = StyleSheet.create({
   title: { fontSize: 30, fontWeight: "700", color: colors.text },
   subtitle: { color: colors.textMuted },
   sectionTitle: { fontWeight: "700", color: colors.text, fontSize: 16 },
+  badgeRow: { flexDirection: "row", gap: spacing.sm, flexWrap: "wrap" },
   meta: { color: colors.textMuted },
   body: { color: colors.text, lineHeight: 21 },
 });
