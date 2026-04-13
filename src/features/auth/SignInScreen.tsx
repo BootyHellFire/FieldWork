@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-import { router } from "expo-router";
 
 import { Card } from "@/components/Card";
 import { FieldButton } from "@/components/FieldButton";
@@ -16,7 +15,6 @@ export function SignInScreen() {
   const handleSignIn = (selectedEmail = email) => {
     const profile = demoUsers.find((user) => user.email === selectedEmail) ?? demoUsers[0];
     setProfile(profile);
-    router.replace(profile.role === "worker" ? "/worker" : "/jobs");
   };
 
   return (
